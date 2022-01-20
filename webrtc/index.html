@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="description" content="Peer Server Tests: WebRTC">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta itemprop="description" content="Client-side Peer Server Tests: WebRTC">
+  <meta itemprop="image" content="./webrtc-icon-192x192.png">
+  <meta itemprop="name" content="Peer Server Tests: WebRTC">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta id="theme-color" name="theme-color" content="#ffffff">
+
+  <base target="_blank">
+
+  <title>Peer Server Tests: WebRTC</title>
+
+  <link rel="icon" sizes="192x192" href="./webrtc-icon-192x192.png">
+  <link href="./index.css" rel="stylesheet" type="text/css">
+
+  <script src="./adapter-latest.js"></script>
+  <script src="./config.js"></script>
+  <script src="./index.js"></script>
+  <script src="./media.js"></script>
+  <script src="./peer_server.js"></script>
+  <script src="./ui.js"></script>
+  <script src="./webrtc.js"></script>
+
+</head>
+
+<body onload="onLoad()">
+
+  <h2> Peer Server Tests: WebRTC. Version 1.0</h2>
+  Command execution result:
+  <br>
+  <textarea id="cmdResult" rows="3" cols="155" readonly></textarea>
+
+  <div id="container">
+    <div class="box">
+      <label for="server">Server</label>
+      <input type="text" class="server" id="server"/>
+      <button id="connectAndSignInButton" onclick="onConnectAndSignIn()">Connect&SignIn</button>
+      <button id="addSslExceptionButton" onclick="onAddSslException()">Add SSL Exception</button>
+    </div>
+
+    <div class="box">
+      <label for="idLocal">My Id</label>
+      <input type="text" class="id" id="idLocal" value="abc1" />
+      <label for="idRemote">Remote Id</label>
+      <input type="text" class="id" id="idRemote" value="abc1" />
+      <button id="startButton" onclick="makeCall()">Start</button>
+      <button id="hangupButton">Hang Up</button>
+    </div>
+
+    <video id="localVideo" playsinline autoplay muted></video>
+    <video id="remoteVideo" playsinline autoplay></video>
+  </div>
+
+</body>
+
+</html>

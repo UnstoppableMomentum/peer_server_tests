@@ -17,6 +17,7 @@ function initUi() {
   // select the first tab
   document.getElementById("tab1").style.display = "block";
   document.getElementById("button_tab1").className += " active";
+  document.getElementById("server").value = config.URL_SERVER_HTTPS;
 }
 
 function showMessage(message) {
