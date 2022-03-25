@@ -1,7 +1,8 @@
 
-function onLoad() {
+async function onLoad() {
     initUi();
-    initMedia();
+    await initMedia();
+    startUpdateStat();
 }
 
 function onAddSslException() {
@@ -14,5 +15,13 @@ function onConnectAndSignIn(localName) {
 
 function signInCallback(data) {
     showCmdResult(JSON.stringify(data));
+}
+
+function getDecodedFrames(videoElement) {
+    if (videoElement &&
+        typeof videoElement.webkitDecodedFrameCount !== undefined) {
+            return videoElement.webkitDecodedFrameCount;
+        }
+    return 0;
 }
 

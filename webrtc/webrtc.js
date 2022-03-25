@@ -7,7 +7,8 @@ async function makeCall() {
 
     await createPeerConnection(idRemote);
   
-    const offer = await pc.createOffer();
+    let offer = await pc.createOffer();
+    offer.sdp = addVideoBandwidth(offer.sdp, bitrateConstraints.minBitrate, bitrateConstraints.maxBitrate);
 
     sendMessage(idRemote, JSON.stringify(offer));
     await pc.setLocalDescription(offer);
@@ -32,7 +33,9 @@ async function handleOffer(from, offer) {
     await pc.setRemoteDescription(offer);
 
     idRemote = from;
-    const answer = await pc.createAnswer();
+    let answer = await pc.createAnswer();
+    answer.sdp = addVideoBandwidth(answer.sdp, bitrateConstraints.minBitrate, bitrateConstraints.maxBitrate);
+
     sendMessage(idRemote, JSON.stringify(answer));
     await pc.setLocalDescription(answer);
 }

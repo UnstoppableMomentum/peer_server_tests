@@ -24,7 +24,9 @@
   <script src="./index.js"></script>
   <script src="./media.js"></script>
   <script src="./peer_server.js"></script>
+  <script src="./statistics.js"></script>
   <script src="./ui.js"></script>
+  <script src="./utils.js"></script>
   <script src="./webrtc.js"></script>
 
 </head>
@@ -53,7 +55,14 @@
       <button id="hangupButton">Hang Up</button>
     </div>
 
+    <p>
+      <span data-content="localResolution"></span>
+      <span data-content="localFps"></span>
+    </p>
     <video id="localVideo" playsinline autoplay muted></video>
+
+    <p data-content="remoteResolution"></p>
+    <p data-content="remoteFps"></p>
     <video id="remoteVideo" playsinline autoplay></video>
   </div>
 
