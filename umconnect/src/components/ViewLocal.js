@@ -12,7 +12,7 @@ class ViewLocal extends Component {
   render() {
     return (
       <div id="ViewLocal" className="maximized-container">
-        <video id="videoLocal" className="video-local" playsinline autoPlay muted></video>
+        <video id="videoLocal" className="video-local" playsInline autoPlay muted></video>
       </div>
     );
   }

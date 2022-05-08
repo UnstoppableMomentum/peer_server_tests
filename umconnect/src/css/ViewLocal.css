@@ -1,9 +1,8 @@
 .maximized-container {
     min-height: 100vh;
-    background-color: #10ee48;
+    background-color: #6679d1;
   }
 
   .video-local {
-    height: 100%;
-    width: 100%;
+    min-height: 100vh;
   }

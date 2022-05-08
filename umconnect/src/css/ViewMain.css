@@ -1,0 +1,8 @@
+.button-connect {
+    position: absolute;
+    top: 0; 
+    right: 0; /* set the right to 0 */
+    height: 10vmin;
+    width: 30vw;
+    background-color: #4256c5;
+  }
