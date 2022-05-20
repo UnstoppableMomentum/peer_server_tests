@@ -1,12 +1,50 @@
+import { 
+    bitrateConstraints,
+    sdpConstraints,
+    pcConfig
+} from './config';
+
+import { 
+    sendMessage,
+    sendMessageICE
+} from '../peer-server'
+
+import { 
+    callConnected
+} from '../call/actions'
+
+
+import { addVideoBandwidth } from './utils' 
+
+import { mediaConstraints } from './config'
+
 let pc = null;
 let idRemote = null;
 
-async function makeCall() {
+let videoLocal = null;
+//let remoteVideo = null;
+let localStream = null;
 
-    idRemote = document.getElementById("idRemote").value;
+export async function initMedia() {
+    videoLocal = document.getElementById('videoLocal');
+  //  remoteVideo = document.getElementById('videoRemote');
+    
+    document.getElementById('videoLocal').addEventListener('resize', (e) => {
+    //  document.querySelector('[data-content="localResolution"]').textContent = [e.target.videoWidth, e.target.videoHeight].join('x');
+    });
 
-    await createPeerConnection(idRemote);
-  
+    // document.getElementById('videoRemote').addEventListener('resize', (e) => {
+    // //   document.querySelector('[data-content="remoteResolution"]').textContent = [e.target.videoWidth, e.target.videoHeight].join('x');
+    // });
+    localStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+
+    videoLocal.srcObject = localStream;
+}
+
+export async function callStart(dispatch, idRemote) {
+
+    await createPeerConnection(dispatch, idRemote);
+
     let offer = await pc.createOffer();
     offer.sdp = addVideoBandwidth(offer.sdp, bitrateConstraints.minBitrate, bitrateConstraints.maxBitrate);
 
@@ -14,22 +52,28 @@ async function makeCall() {
     await pc.setLocalDescription(offer);
 }
 
-function createPeerConnection() {
+function createPeerConnection(dispatch) {
+    const remoteVideo = document.getElementById('videoRemote');
+
     pc = new RTCPeerConnection(pcConfig, sdpConstraints);
 
     pc.onicecandidate = onIceCandidate;
-    pc.ontrack = e => remoteVideo.srcObject = e.streams[0];
+    pc.ontrack = e => {
+        console.log('Remote :%o', remoteVideo);
+        callConnected(dispatch);
+        remoteVideo.srcObject = e.streams[0];
+    }
 
     localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
 }
 
-async function handleOffer(from, offer) {
+export async function handleOffer(dispatch, from, offer) {
     if (pc) {
         console.error('existing peerconnection');
         return;
     }
 
-    await createPeerConnection();
+    await createPeerConnection(dispatch);
     await pc.setRemoteDescription(offer);
 
     idRemote = from;
@@ -40,32 +84,32 @@ async function handleOffer(from, offer) {
     await pc.setLocalDescription(answer);
 }
 
-async function handleAnswer(answer) {
+export async function handleAnswer(dispatch, answer) {
     if (!pc) {
         console.error('no peerconnection');
         return;
     }
     await pc.setRemoteDescription(answer);
+    callConnected(dispatch);
 }
 
-async function handleCandidate(message) {
+export async function handleCandidate(dispatch, message) {
     if (!pc) {
-      console.error('no peerconnection');
-      return;
+        console.error('no peerconnection');
+        return;
     }
 
     const candidate = new RTCIceCandidate({
         sdpMLineIndex: message.sdpMLineIndex,
         candidate: message.candidate
-      });
+    });
 
     if (!candidate.candidate) {
-      await pc.addIceCandidate(null);
+        await pc.addIceCandidate(null);
     } else {
-      await pc.addIceCandidate(candidate);
+        await pc.addIceCandidate(candidate);
     }
-  }
-  
+}
 
 function onIceCandidate(event) {
     if (event.candidate) {
@@ -75,7 +119,7 @@ function onIceCandidate(event) {
     }
 }
 
-function destroylPeerConnection() {
+export function destroylPeerConnection() {
     if (pc) {
         pc.close();
         pc = null;

@@ -6,3 +6,29 @@
     width: 30vw;
     background-color: #4256c5;
   }
+.button-call{
+    position: absolute;
+    top: 10vmin; 
+    right: 0; /* set the right to 0 */
+    height: 10vmin;
+    width: 30vw;
+    background-color: #4256c5;
+  }
+
+  .inputs {
+    position: absolute;
+    top: 0; 
+    left: 0; /* set the right to 0 */
+    /* width: 50vw; */
+    /* background-color: #7db99d; */
+  }
+
+
+  .dbg-info {
+    position: absolute;
+    top: 50vmin; 
+    left: 0; /* set the right to 0 */
+    /* width: 50vw; */
+    /* background-color: #7db99d; */
+    color: rgb(0, 255, 0);
+  }

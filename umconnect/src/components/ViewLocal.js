@@ -1,21 +1,54 @@
 import React, { Component } from 'react';
-import { initMedia } from './webrtc/media';
+import { connect } from "react-redux";
+import { initMedia } from './webrtc/webrtc';
 
 import '../css/ViewLocal.css';
 
+type Props = {
+  progressCall: 0,
+  classes: Object,
+};
+
 class ViewLocal extends Component {
 
-  async componentDidMount() {
-    await initMedia();
+  constructor(props: Props) {
+    super(props);
+
+    this._getStyle = this._getStyle.bind(this);
   }
 
-  render() {
-    return (
-      <div id="ViewLocal" className="maximized-container">
-        <video id="videoLocal" className="video-local" playsInline autoPlay muted></video>
-      </div>
-    );
-  }
+    _getStyle() {
+        const { progressCall = 0 } = this.props;
+        let res = 'video-container-maximized';
+        switch (progressCall) {
+            case 0:
+            case 1:
+                break;
+            case 2:
+                res = "video-container-small ";
+                break;
+        }
+        //res = "video-container-small ";
+        return res;
+    }
+
+    async componentDidMount() {
+        await initMedia();
+    }
+
+    render() {
+        return (<div id="ViewLocal" className={this._getStyle()} >
+            <video id="videoLocal" className="video-maximized" playsInline autoPlay muted > </video> 
+            </div>
+        );
+    }
 }
 
-export default ViewLocal;
+const mapStateToProps = state => {
+    const { progress: progressCall = 0 } = state?.call;
+    return {
+        progressCall
+    };
+};
+
+export default connect(mapStateToProps)(ViewLocal);

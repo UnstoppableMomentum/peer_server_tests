@@ -4,15 +4,49 @@ const config = {
 
 };
 
-var pcConfig = {
-  "iceServers": [
-      {
-          url: "stun:127.0.0.1:3478"
-      }
-  ]
+const ICE_SERVERS = [
+  {
+    urls: [
+      "stun:127.0.0.1:3478",
+      "stun:stun.l.google.com:19302",
+      "stun:stun1.l.google.com:19302",
+      "stun:stun2.l.google.com:19302",
+      "stun:stun3.l.google.com:19302",
+    ]
+  },
+  // TURN: https://tools.ietf.org/html/rfc7065
+  // {
+  //   urls: [
+  //     "turn:myturn:3478?transport=udp",
+  //     "turn:myturn:3478?transport=tcp",
+  //   ],
+  //   credential: "webrtc",
+  //   username: "webrtc",
+  // },
+  // {
+  //   urls: [
+  //     "turn:myturn2:3478?transport=udp",
+  //     "turn:myturn2:3478?transport=tcp",
+  //   ],
+  //   credential: "webrtc",
+  //   username: "webrtc",
+  // },
+];
+
+
+export const pcConfig = {
+  "iceServers": ICE_SERVERS,
 };
 
-var sdpConstraints = {
+// export var pcConfig = {
+//   "iceServers": [
+//       {
+//           url: "stun:127.0.0.1:3478"
+//       }
+//   ]
+// };
+
+export var sdpConstraints = {
   optional: [{
       DtlsSrtpKeyAgreement: true
   }, {
@@ -35,3 +69,8 @@ export const mediaConstraints = {
       }
   }
 };
+
+export const bitrateConstraints = {
+  minBitrate: 800,
+  maxBitrate: 30000,
+}

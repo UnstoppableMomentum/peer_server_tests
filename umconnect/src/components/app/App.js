@@ -1,6 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
-import LoginContainer from './components/LoginContainer'
+import logo from '../../logo.svg';
+import '../../css/App.css';
+import LoginContainer from '../LoginContainer'
 
 function App() {
   return (
