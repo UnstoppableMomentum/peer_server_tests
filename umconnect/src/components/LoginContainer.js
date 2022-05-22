@@ -39,7 +39,7 @@ class LoginContainer extends Component {
     this.state = {
       localName: '',
       remoteName: '', 
-      urlServer: ''
+      urlServer: 'wss://192.168.0.106:8080'
     };
     this._onConnectPeerServer = this._onConnectPeerServer.bind(this);
     this._onCall = this._onCall.bind(this);

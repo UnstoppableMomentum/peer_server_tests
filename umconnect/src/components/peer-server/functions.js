@@ -71,6 +71,7 @@ export function sendMessage(to, msg) {
 }
 
 export function sendMessageICE(peer_id, event) {
+    console.log('send ICE peer_id: %o', peer_id);
     sendMessage(peer_id, JSON.stringify({
         type: MSG_CANDIDATE,
         sdpMLineIndex: event.candidate.sdpMLineIndex,

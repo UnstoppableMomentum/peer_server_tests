@@ -1,5 +1,6 @@
 import { 
     bitrateConstraints,
+    mediaConstraints,
     sdpConstraints,
     pcConfig
 } from './config';
@@ -16,18 +17,17 @@ import {
 
 import { addVideoBandwidth } from './utils' 
 
-import { mediaConstraints } from './config'
-
 let pc = null;
 let idRemote = null;
 
 let videoLocal = null;
-//let remoteVideo = null;
+let remoteVideo = null;
 let localStream = null;
+let glIdRemote = null;
 
 export async function initMedia() {
     videoLocal = document.getElementById('videoLocal');
-  //  remoteVideo = document.getElementById('videoRemote');
+    remoteVideo = document.getElementById('videoRemote');
     
     document.getElementById('videoLocal').addEventListener('resize', (e) => {
     //  document.querySelector('[data-content="localResolution"]').textContent = [e.target.videoWidth, e.target.videoHeight].join('x');
@@ -52,11 +52,10 @@ export async function callStart(dispatch, idRemote) {
     await pc.setLocalDescription(offer);
 }
 
-function createPeerConnection(dispatch) {
-    const remoteVideo = document.getElementById('videoRemote');
-
+function createPeerConnection(dispatch, idRemote) {
     pc = new RTCPeerConnection(pcConfig, sdpConstraints);
-
+    glIdRemote = idRemote;
+    console.log('glIdRemote: %o', glIdRemote);
     pc.onicecandidate = onIceCandidate;
     pc.ontrack = e => {
         console.log('Remote :%o', remoteVideo);
@@ -67,16 +66,17 @@ function createPeerConnection(dispatch) {
     localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
 }
 
-export async function handleOffer(dispatch, from, offer) {
+export async function handleOffer(dispatch, idRemote, offer) {
     if (pc) {
         console.error('existing peerconnection');
         return;
     }
 
-    await createPeerConnection(dispatch);
+    await createPeerConnection(dispatch, idRemote);
     await pc.setRemoteDescription(offer);
 
-    idRemote = from;
+    glIdRemote = idRemote;
+    console.log('handleOffer glIdRemote: %o', glIdRemote);
     let answer = await pc.createAnswer();
     answer.sdp = addVideoBandwidth(answer.sdp, bitrateConstraints.minBitrate, bitrateConstraints.maxBitrate);
 
@@ -113,7 +113,8 @@ export async function handleCandidate(dispatch, message) {
 
 function onIceCandidate(event) {
     if (event.candidate) {
-        sendMessageICE(idRemote, event);
+        console.log('onIceCandidate glIdRemote: %o', glIdRemote);
+        sendMessageICE(glIdRemote, event);
     } else {
         console.debug("End of candidates.");
     }

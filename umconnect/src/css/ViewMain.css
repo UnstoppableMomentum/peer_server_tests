@@ -2,16 +2,16 @@
     position: absolute;
     top: 0; 
     right: 0; /* set the right to 0 */
-    height: 10vmin;
-    width: 30vw;
+    height: 60px;
+    width: 130px;
     background-color: #4256c5;
   }
 .button-call{
     position: absolute;
-    top: 10vmin; 
+    top: 60px; 
     right: 0; /* set the right to 0 */
-    height: 10vmin;
-    width: 30vw;
+    height: 60px;
+    width: 130px;
     background-color: #4256c5;
   }
 

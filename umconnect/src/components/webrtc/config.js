@@ -1,7 +1,8 @@
 const config = {
-  URL_SERVER_HTTPS : "https://127.0.0.1:8080",
-  URL_SERVER_WSS : "wss://127.0.0.1:8080"
-
+  // URL_SERVER_HTTPS : "https://127.0.0.1:8080",
+  // URL_SERVER_WSS : "wss://127.0.0.1:8080"
+  URL_SERVER_HTTPS : "https://192.168.0.106:8080",
+  URL_SERVER_WSS : "wss://192.168.0.106:8080"
 };
 
 const ICE_SERVERS = [
@@ -37,14 +38,6 @@ const ICE_SERVERS = [
 export const pcConfig = {
   "iceServers": ICE_SERVERS,
 };
-
-// export var pcConfig = {
-//   "iceServers": [
-//       {
-//           url: "stun:127.0.0.1:3478"
-//       }
-//   ]
-// };
 
 export var sdpConstraints = {
   optional: [{
