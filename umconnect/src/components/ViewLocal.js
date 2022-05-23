@@ -38,11 +38,18 @@ class ViewLocal extends Component {
 
     render() {
         return (<div id="ViewLocal" className={this._getStyle()} >
-            <video id="videoLocal" className="video-maximized" playsInline autoPlay muted > </video> 
-            </div>
+            <video
+                id='videoLocal'
+                className="video-maximized"
+                autoPlay={true}
+                playsInline={true} /* for Safari on iOS to work */ />
+        </div>
         );
     }
 }
+
+
+
 
 const mapStateToProps = state => {
     const { progress: progressCall = 0 } = state?.call;

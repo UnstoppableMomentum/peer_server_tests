@@ -19,7 +19,11 @@ class ViewRemote extends Component {
 
     render() {
         return (<div className='video-remote-container-maximized' >
-            <video id="videoRemote" className="video-maximized" playsInline autoPlay muted > </video> 
+            <video
+                id='videoRemote'
+                className="video-maximized"
+                autoPlay={true}
+                playsInline={true} /* for Safari on iOS to work */ />
             </div>
         );
     }
