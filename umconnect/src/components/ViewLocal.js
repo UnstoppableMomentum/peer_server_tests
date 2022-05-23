@@ -42,6 +42,7 @@ class ViewLocal extends Component {
                 id='videoLocal'
                 className="video-maximized"
                 autoPlay={true}
+                muted = { true }
                 playsInline={true} /* for Safari on iOS to work */ />
         </div>
         );
