@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 
-import '../css/ViewRemote.css';
+import '../../css/ViewRemote.css';
 
 type Props = {
   progressCall: 0,

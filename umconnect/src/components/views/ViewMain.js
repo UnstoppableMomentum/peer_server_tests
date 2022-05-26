@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import ViewLocal from './ViewLocal'
 import ViewRemote from './ViewRemote'
-import { call, hungup } from './call/actions'
+import { call, hungup } from '../call/actions'
 import { connect } from "react-redux";
-import { connectPeerServer } from './peer-server/actions';
-import { fetchNewTime } from "./redux/actionCreators";
-import { VERSION } from './version';
-import '../css/ViewMain.css';
+import { connectPeerServer } from '../peer-server/actions';
+import { fetchNewTime } from "../redux/actionCreators";
+import { VERSION } from '../version';
+import '../../css/ViewMain.css';
 
 type Props = {
   progressCall: 0,
@@ -32,7 +32,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-class LoginContainer extends Component {
+class ViewMain extends Component {
 
   constructor(props: Props) {
     super(props);
@@ -120,7 +120,7 @@ class LoginContainer extends Component {
     const { progressCall = 0, progressPeer = 0 } = this.props;
 
     return (
-      <div id="LoginContainer" className="inner-container">
+      <div id="ViewMain" className="inner-container">
         <ViewRemote />
         <ViewLocal />
         <button className="button-connect" onClick={this._onConnectPeerServer} disabled={!this.state.localName}>Подкл Сервер</button>
@@ -150,5 +150,5 @@ class LoginContainer extends Component {
   }
 }
 
-//export default LoginContainer;
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);
+//export default ViewMain;
+export default connect(mapStateToProps, mapDispatchToProps)(ViewMain);

@@ -1,11 +1,11 @@
 import logo from '../../logo.svg';
 import '../../css/App.css';
-import LoginContainer from '../LoginContainer'
+import ViewMain from '../views/ViewMain'
 
 function App() {
   return (
     <div className="App">
-      <LoginContainer/>
+      <ViewMain/>
     </div>
   );
 }

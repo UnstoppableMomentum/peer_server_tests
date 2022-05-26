@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { initMedia } from './webrtc/webrtc';
+import { initMedia } from '../webrtc/webrtc';
 
-import '../css/ViewLocal.css';
+import '../../css/ViewLocal.css';
 
 type Props = {
   progressCall: 0,
