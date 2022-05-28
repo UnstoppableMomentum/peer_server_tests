@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { connectPeerServer } from '../peer-server/actions';
 import { fetchNewTime } from "../redux/actionCreators";
 import { VERSION } from '../version';
+import { getUrlPeerServer } from '../config'
 import '../../css/ViewMain.css';
 
 type Props = {
@@ -39,7 +40,7 @@ class ViewMain extends Component {
     this.state = {
       localName: '',
       remoteName: '', 
-      urlServer: 'wss://localhost:8080'
+      urlServer: getUrlPeerServer()
     };
     this._onConnectPeerServer = this._onConnectPeerServer.bind(this);
     this._onCall = this._onCall.bind(this);
@@ -47,7 +48,6 @@ class ViewMain extends Component {
     this._debugInfo = this._debugInfo.bind(this);
     this._onChangeLocalName = this._onChangeLocalName.bind(this);
     this._onChangeRemoteName = this._onChangeRemoteName.bind(this);
-    this._onChangeServer = this._onChangeServer.bind(this);
   }
 
   _onConnectPeerServer() {
@@ -112,10 +112,6 @@ class ViewMain extends Component {
     this.setState({ remoteName: event.target.value });
   }
 
-  _onChangeServer(event) {
-    this.setState({urlServer: event.target.value});
-  }
-
   render() {
     const { progressCall = 0, progressPeer = 0 } = this.props;
 
@@ -126,12 +122,6 @@ class ViewMain extends Component {
         <button className="button-connect" onClick={this._onConnectPeerServer} disabled={!this.state.localName}>Подкл Сервер</button>
         <button className="button-call" onClick={this._onCall} disabled={progressPeer !== 3}>Позвонить</button>
         <div className="inputs">
-          <label>
-            Server
-            <input type="text" value={this.state.urlServer} onChange={this._onChangeServer} />
-          </label>
-          <p />
-
           <label>
             Moё Имя
             <input type="text" value={this.state.localName} onChange={this._onChangeLocalName} />
