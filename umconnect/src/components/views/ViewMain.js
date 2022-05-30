@@ -7,7 +7,15 @@ import { connectPeerServer } from '../peer-server/actions';
 import { fetchNewTime } from "../redux/actionCreators";
 import { VERSION } from '../version';
 import { getUrlPeerServer } from '../config'
+import  ButtonCall  from '../controls/ButtonCall'
+import  ButtonRegister  from '../controls/ButtonRegister'
+
+
+import { IconRegister } from '../../images';
+
+import '../../css/Buttons.css';
 import '../../css/ViewMain.css';
+import '../../css/test.css'
 
 type Props = {
   progressCall: 0,
@@ -112,6 +120,11 @@ class ViewMain extends Component {
     this.setState({ remoteName: event.target.value });
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+    alert(`The name you entered was: ${this.state.localName}`);
+  }
+
   render() {
     const { progressCall = 0, progressPeer = 0 } = this.props;
 
@@ -119,9 +132,29 @@ class ViewMain extends Component {
       <div id="ViewMain" className="inner-container">
         <ViewRemote />
         <ViewLocal />
-        <button className="button-connect" onClick={this._onConnectPeerServer} disabled={!this.state.localName}>Подкл Сервер</button>
-        <button className="button-call" onClick={this._onCall} disabled={progressPeer !== 3}>Позвонить</button>
+
+        <ButtonCall onClick={this._onCall} disabled={!this.state.remoteName}/>
+        <ButtonRegister onClick={this._onConnectPeerServer} disabled={!this.state.localName}/>
         <div className="inputs">
+        <form onSubmit={this.handleSubmit}
+        method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate>
+  <input type="text" placeholder="Введите свое имя"/>
+  <a type="submit" className="fi-mail"></a>
+</form>
+        {/* <form onSubmit={this.handleSubmit}>
+      <label>Enter your name:
+        <input
+          type="text" 
+          value={this.state.localName}
+          onChange={this._onChangeLocalName}
+        />
+      </label>
+      <button type="submit" className='button-base'/>
+    </form> */}
+
+
+
+{/*           
           <label>
             Moё Имя
             <input type="text" value={this.state.localName} onChange={this._onChangeLocalName} />
@@ -130,15 +163,20 @@ class ViewMain extends Component {
           <label>
             Позвонить Имя
             <input type="text" value={this.state.remoteName} onChange={this._onChangeRemoteName} />
-          </label>
+          </label> */}
         </div>
+
+
+
         <div className="dbg-info">
           {this._debugInfo()}
         </div>
+        <textarea>
+  Привет! Тут просто немного текста внутри тега textarea
+</textarea>
       </div>
     );
   }
 }
 
-//export default ViewMain;
 export default connect(mapStateToProps, mapDispatchToProps)(ViewMain);

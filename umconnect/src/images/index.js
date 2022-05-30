@@ -1,3 +1,3 @@
-export { default as IconPeerServerConnect } from './podcast.svg';
-export { default as IconCall } from './phone.svg';
-export { default as IconHangUp } from './phone-hang-up.svg';
+export { ReactComponent as IconRegister } from './svg/user.svg';
+export { ReactComponent as IconCall } from './svg/phone.svg';
+export { ReactComponent as IconHangUp } from './svg/phone-hang-up.svg';

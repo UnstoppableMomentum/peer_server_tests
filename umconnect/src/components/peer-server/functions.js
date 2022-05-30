@@ -33,7 +33,7 @@ export function connectAndSignIn(dispatch, urlServer, localName) {
     try {
 
         const urlServer_ = (urlServer && urlServer.length > 0) ? urlServer : DEFAULT_URL_SERVER_WSS;
-        webSocket = new W3CWebSocket(urlServer_);
+        webSocket = new W3CWebSocket(urlServer_, 'echo-protocol');
 
         webSocket.onopen = (event => {
 
