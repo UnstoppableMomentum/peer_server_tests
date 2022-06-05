@@ -52,6 +52,10 @@ export async function callStart(dispatch, idRemote) {
     await pc.setLocalDescription(offer);
 }
 
+export function callStop() {
+    destroylPeerConnection();
+}
+
 function createPeerConnection(dispatch, idRemote) {
     pc = new RTCPeerConnection(pcConfig, sdpConstraints);
     glIdRemote = idRemote;
@@ -120,10 +124,9 @@ function onIceCandidate(event) {
     }
 }
 
-export function destroylPeerConnection() {
+function destroylPeerConnection() {
     if (pc) {
         pc.close();
         pc = null;
     }
 }
-

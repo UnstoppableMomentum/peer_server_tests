@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import '../../css/ViewRemote.css';
 
 type Props = {
-  progressCall: 0,
-  classes: Object,
+  classes: Object
 };
 
 class ViewRemote extends Component {
@@ -30,9 +29,7 @@ class ViewRemote extends Component {
 }
 
 const mapStateToProps = state => {
-    const { progress: progressCall = 0 } = state?.call;
     return {
-        progressCall
     };
 };
 

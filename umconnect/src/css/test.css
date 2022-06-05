@@ -1,8 +1,9 @@
 * {
 	-webkit-font-smoothing: antialiased;
 	font-family: Helvetica Neue, Helvetica, Arial, Sans-Serif;
-	font-size: 15px;
-	color: #fff;
+	font-size: 17px;
+	color: rgb(255, 255, 255);
+	font-weight: lighter;
 }
 
 html {
@@ -43,7 +44,7 @@ input {
 }
 
 form a {
-	float: right;
+	/* float: right;
 	background: #4db6ec;
 	border: 0;
 	line-height: 38px;
@@ -56,7 +57,7 @@ form a {
 	font-size: 1.2em;
 	text-align: center;
 	cursor: pointer;
-	text-decoration: none;
+	text-decoration: none; */
 }
 
 form a:hover {
@@ -120,27 +121,9 @@ form a.fi-check:hover {
 }
 
 .fi-mail:before {
-  content: "\f16d";
-}
-
-::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color:    rgba(0, 0, 0, .2);
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    rgba(0, 0, 0, .2);
-   opacity:  .2;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    rgba(0, 0, 0, .2);
-   opacity:  .2;
-}
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color:    rgba(0, 0, 0, .2);
-}
-::-ms-input-placeholder { /* Microsoft Edge */
-   color:    rgba(0, 0, 0, .2);
+  content: "\1F464";
 }
 
 ::placeholder { /* Most modern browsers support this now. */
-   color:    rgba(0, 0, 0, .2);
+   color:    rgba(200, 200, 200, 0.8);
 }

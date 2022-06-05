@@ -1,0 +1,13 @@
+.text-input {
+    height: 20px;
+    border-radius: 10px;
+    border-color: white;
+    background: transparent;
+    font-size:17px;
+    color: rgb(255, 255, 255);
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgb(255, 255, 255, 0.7);
+    opacity: 0.7; /* Firefox */
+  }

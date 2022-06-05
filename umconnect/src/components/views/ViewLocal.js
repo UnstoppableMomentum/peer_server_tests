@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { initMedia } from '../webrtc/webrtc';
 
+import {
+    CALL_STATE_DISCONNECTED,
+    CALL_STATE_CONNECTED
+} from '../call';
+
 import '../../css/ViewLocal.css';
 
 type Props = {
-  progressCall: 0,
+  progressCall: CALL_STATE_DISCONNECTED,
   classes: Object,
 };
 
@@ -18,17 +23,15 @@ class ViewLocal extends Component {
   }
 
     _getStyle() {
-        const { progressCall = 0 } = this.props;
+        const { progressCall = CALL_STATE_DISCONNECTED } = this.props;
         let res = 'video-container-maximized';
         switch (progressCall) {
-            case 0:
-            case 1:
-                break;
-            case 2:
+            case CALL_STATE_CONNECTED:
                 res = "video-container-small ";
                 break;
+            default:
+                break;
         }
-        //res = "video-container-small ";
         return res;
     }
 
@@ -53,7 +56,7 @@ class ViewLocal extends Component {
 
 
 const mapStateToProps = state => {
-    const { progress: progressCall = 0 } = state?.call;
+    const { progress: progressCall = CALL_STATE_DISCONNECTED } = state?.call;
     return {
         progressCall
     };

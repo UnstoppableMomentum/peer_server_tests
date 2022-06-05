@@ -1,7 +1,7 @@
 import {
-callConnected,
-_callStart
-} from '../call/actions'
+    askConfirmCall,
+    incomingReject
+} from '../call'
 
 import {
     connected,
@@ -33,7 +33,7 @@ export function connectAndSignIn(dispatch, urlServer, localName) {
     try {
 
         const urlServer_ = (urlServer && urlServer.length > 0) ? urlServer : DEFAULT_URL_SERVER_WSS;
-        webSocket = new W3CWebSocket(urlServer_, 'echo-protocol');
+        webSocket = new W3CWebSocket(urlServer_);
 
         webSocket.onopen = (event => {
 
@@ -97,6 +97,11 @@ function onRemoteHangup(dispatch)
     console.log('@@@ onRemoteHangup');    
 }
 
+function _onIncomingReject(dispatch, from) 
+{
+    incomingReject(dispatch, from);
+}
+
 export function onWebSocketMessage(dispatch, message) {
     try {
         const objMessage = JSON.parse(message);
@@ -135,8 +140,7 @@ export function processSignalingMessage(dispatch, from, message) {
     }
     var msg = JSON.parse(message);
     if (msg.type === MSG_OFFER) {
-        dispatch(_callStart());
-        handleOffer(dispatch, from, msg);
+        askConfirmCall(dispatch, from, msg);
     } else if (msg.type === MSG_ANSWER) {
         handleAnswer(dispatch, msg);
     } else if (msg.type === MSG_CANDIDATE) {
@@ -146,6 +150,6 @@ export function processSignalingMessage(dispatch, from, message) {
     } else if (msg.type === MSG_BUSY) {
         //TODO
     } else if (msg.type === MSG_REGECT) {
-        //TODO
+        _onIncomingReject(dispatch, from);
     }
 }

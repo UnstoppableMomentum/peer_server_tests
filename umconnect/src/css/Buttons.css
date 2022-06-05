@@ -1,12 +1,7 @@
 .button-base {
     background-color: rgb(10, 84, 221);
-    border-radius: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -50px;
-    width: 100px;
+    border-radius: 50%;
+     width: 100px;
     height: 100px;
 }
 
@@ -27,10 +22,6 @@
     opacity: 0.2;
 }
 
-.button-call2 {
-    background-color: rgb(38, 247, 10);
-}
-
-.button-register {
-    background-color: rgb(20, 77, 235);
+.button-nodisplay {
+    display: none;  
 }

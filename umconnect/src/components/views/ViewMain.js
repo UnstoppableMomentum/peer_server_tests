@@ -1,32 +1,36 @@
 import React, { Component } from 'react';
+import { DialogCallConfirm } from '../dialogs/DialogCallConfirm'
 import ViewLocal from './ViewLocal'
 import ViewRemote from './ViewRemote'
-import { call, hungup } from '../call/actions'
+import { call, incomingCall, reject, hungup } from '../call'
+import {
+  CALL_STATE_DISCONNECTED,
+  CALL_STATE_CONNECTING,
+  CALL_STATE_CONFIRMING,
+  CALL_STATE_CONNECTED
+} from '../call';
+
 import { connect } from "react-redux";
 import { connectPeerServer } from '../peer-server/actions';
 import { fetchNewTime } from "../redux/actionCreators";
-import { VERSION } from '../version';
 import { getUrlPeerServer } from '../config'
-import  ButtonCall  from '../controls/ButtonCall'
-import  ButtonRegister  from '../controls/ButtonRegister'
-
-
-import { IconRegister } from '../../images';
-
-import '../../css/Buttons.css';
+import { VERSION } from '../version';
 import '../../css/ViewMain.css';
-import '../../css/test.css'
+import '../../css/TextInput.css';
+import '../../css/Buttons.css';
 
 type Props = {
-  progressCall: 0,
+  callData: {},
+  progressCall: CALL_STATE_DISCONNECTED,
   progressPeer: 0,
   classes: Object,
 };
 
 const mapStateToProps = state => {
-  const { progress : progressCall = 0} = state?.call;
-  const { progress : progressPeer = 0} = state?.peerConnection;
+  const { progress: progressCall = CALL_STATE_DISCONNECTED, data: callData = {} } = state?.call;
+  const { progress: progressPeer = 0 } = state?.peerConnection;
   return {
+    callData,
     currentTime: state.currentTime.currentTime,
     progressCall,
     progressPeer
@@ -35,9 +39,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   updateTime: () => dispatch(fetchNewTime()),
-  dispatchConnectPeerServer : (urlServer, localName) => connectPeerServer(dispatch, urlServer, localName),
-  dispatchCall : (remoteName) => call(dispatch, remoteName),
-  dispatchHungup : (hungup) => hungup(dispatch)
+  dispatchConnectPeerServer: (urlServer, localName) => connectPeerServer(dispatch, urlServer, localName),
+  dispatchCall: (remoteName) => call(dispatch, remoteName),
+  dispatchIncomingCall: (callData) => incomingCall(dispatch, callData),
+  dispatchReject: (remoteName) => reject(dispatch, remoteName),
+  dispatchHungup: (hungup) => hungup(dispatch)
 });
 
 
@@ -47,15 +53,33 @@ class ViewMain extends Component {
     super(props);
     this.state = {
       localName: '',
-      remoteName: '', 
+      remoteName: '',
       urlServer: getUrlPeerServer()
     };
     this._onConnectPeerServer = this._onConnectPeerServer.bind(this);
     this._onCall = this._onCall.bind(this);
+    this._onConfirm = this._onConfirm.bind(this);
+    this._onReject = this._onReject.bind(this);
     this._onHungup = this._onHungup.bind(this);
     this._debugInfo = this._debugInfo.bind(this);
     this._onChangeLocalName = this._onChangeLocalName.bind(this);
     this._onChangeRemoteName = this._onChangeRemoteName.bind(this);
+    this._handleSubmit = this._handleSubmit.bind(this);
+    this._renderControlsConnectPeer = this._renderControlsConnectPeer.bind(this);
+    this._renderControlsCall = this._renderControlsCall.bind(this);
+    this._renderInputButton = this._renderInputButton.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { progressCall = CALL_STATE_DISCONNECTED } = this.props;
+
+    if (progressCall === CALL_STATE_CONFIRMING) {
+      const { callData = {} } = this.props;
+      const { from = 'неизвестный пользователь' } = callData;
+      this.state.remoteName = from;
+
+      DialogCallConfirm(from, this._onConfirm, this._onReject);
+    }
   }
 
   _onConnectPeerServer() {
@@ -68,6 +92,16 @@ class ViewMain extends Component {
     dispatchCall(this.state.remoteName);
   }
 
+  _onConfirm() {
+    const { callData, dispatchIncomingCall } = this.props;
+    dispatchIncomingCall(callData);
+  }
+
+  _onReject() {
+    const { dispatchReject } = this.props;
+    dispatchReject(this.state.remoteName);
+  }
+
   _onHungup() {
     const { dispatchHungup } = this.props;
     dispatchHungup();
@@ -75,36 +109,36 @@ class ViewMain extends Component {
 
   _debugPeerServer() {
     const { progressPeer = 0 } = this.props;
-    let res = "Сервер: отключен";
+    let strProgressPeer = "отключен";
     switch (progressPeer) {
       case 0:
         break;
       case 1:
-          res = "Сервер: подключение ...";
-          break;
+        strProgressPeer = "подключение ...";
+        break;
       case 2:
-        res = "Сервер: регистрация ...";
+        strProgressPeer = "регистрация ...";
         break;
       case 3:
-          res = "Сервер: подключен";
-   
-      }
-    return res;
+        strProgressPeer = "подключен";
+
+    }
+    return `Сервер: ${this.state.urlServer} : ${strProgressPeer}`;
   }
 
   _debugInfoCall() {
-    const { progressCall = 0 } = this.props;
+    const { progressCall = CALL_STATE_DISCONNECTED } = this.props;
     let res = "Чат: отключен";
     switch (progressCall) {
-      case 0:
+      case CALL_STATE_CONNECTING:
+        res = "Чат: подключение...";
         break;
-      case 1:
-          res = "Чат: подключение...";
-          break;
-      case 2:
+      case CALL_STATE_CONNECTED:
         res = "Чат: подключен";
-        break;   
-      }
+        break;
+      default:
+        break;
+    }
     return res;
   }
 
@@ -120,60 +154,115 @@ class ViewMain extends Component {
     this.setState({ remoteName: event.target.value });
   }
 
-  handleSubmit = (event) => {
+  _handleSubmit = (event) => {
     event.preventDefault();
-    alert(`The name you entered was: ${this.state.localName}`);
+    const {
+      dispatchCall,
+      dispatchConnectPeerServer,
+      progressCall,
+      progressPeer
+    } = this.props;
+
+    switch (progressPeer) {
+      case 0:
+        dispatchConnectPeerServer(this.state.urlServer, this.state.localName);
+        break;
+      case 1:
+      case 2:
+        break;
+      case 3:
+        switch (progressCall) {
+          case CALL_STATE_DISCONNECTED:
+            dispatchCall(this.state.remoteName);
+            break;
+          default:
+            break;
+        }
+        break;
+    }
   }
 
+  _renderControlsConnectPeer() {
+    const { progressPeer = 0 } = this.props;
+
+    return (
+      <>
+        {
+          <input type="text" className='text-input' disabled={progressPeer === 3} onChange={this._onChangeLocalName} placeholder="Введите свое имя" />
+        }
+      </>
+    );
+  }
+
+  _renderControlsCall() {
+    const { progressCall = CALL_STATE_DISCONNECTED, progressPeer = 0 } = this.props;
+    const disabled_ = progressPeer !== 3 && progressCall === CALL_STATE_DISCONNECTED;
+    const placeholderText_ = disabled_ ? null : "Введите имя собеседника";
+
+    return (
+      <>
+        {
+          <input type="text" className='text-input' disabled={disabled_} onChange={this._onChangeRemoteName} placeholder={placeholderText_} />
+        }
+      </>
+    );
+  }
+
+  _renderInputButton() {
+    const { progressCall = CALL_STATE_DISCONNECTED, progressPeer = 0 } = this.props;
+    let className_ = "button-base";
+    let disabled_ = true;
+
+    switch (progressPeer) {
+      case 0:
+        disabled_ = !this.state.localName;
+        break;
+      case 1:
+      case 2:
+        break;
+      case 3:
+        switch (progressCall) {
+          case CALL_STATE_DISCONNECTED:
+            disabled_ = !this.state.remoteName;
+            break;
+          case CALL_STATE_CONNECTED:
+            className_ += " button-nodisplay"
+            break;
+          default:
+            break;
+        }
+        break;
+    }
+
+    return (
+      <>
+        {
+          <input type="submit" value="OK" className={className_} disabled={disabled_}/>
+        }
+      </>
+    );
+  }
+  
+
+  // https://www.npmjs.com/package/react-confirm-alert
   render() {
-    const { progressCall = 0, progressPeer = 0 } = this.props;
 
     return (
       <div id="ViewMain" className="inner-container">
         <ViewRemote />
         <ViewLocal />
-
-        <ButtonCall onClick={this._onCall} disabled={!this.state.remoteName}/>
-        <ButtonRegister onClick={this._onConnectPeerServer} disabled={!this.state.localName}/>
         <div className="inputs">
-        <form onSubmit={this.handleSubmit}
-        method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate>
-  <input type="text" placeholder="Введите свое имя"/>
-  <a type="submit" className="fi-mail"></a>
-</form>
-        {/* <form onSubmit={this.handleSubmit}>
-      <label>Enter your name:
-        <input
-          type="text" 
-          value={this.state.localName}
-          onChange={this._onChangeLocalName}
-        />
-      </label>
-      <button type="submit" className='button-base'/>
-    </form> */}
-
-
-
-{/*           
-          <label>
-            Moё Имя
-            <input type="text" value={this.state.localName} onChange={this._onChangeLocalName} />
-          </label>
-          <p />
-          <label>
-            Позвонить Имя
-            <input type="text" value={this.state.remoteName} onChange={this._onChangeRemoteName} />
-          </label> */}
+          <form onSubmit={this._handleSubmit} noValidate>
+            {this._renderControlsConnectPeer()}
+            <p />
+            {this._renderControlsCall()}
+            <p />
+            {this._renderInputButton()}
+          </form>
         </div>
-
-
-
         <div className="dbg-info">
           {this._debugInfo()}
         </div>
-        <textarea>
-  Привет! Тут просто немного текста внутри тега textarea
-</textarea>
       </div>
     );
   }

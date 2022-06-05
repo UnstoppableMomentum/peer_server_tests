@@ -1,43 +1,32 @@
 .button-connect {
-  position: absolute;
-  top: 0;
-  right: 0;
-  /* set the right to 0 */
-  height: 60px;
-  width: 130px;
-  background-color: #4256c5;
-}
+    position: absolute;
+    top: 0; 
+    right: 0; /* set the right to 0 */
+    height: 60px;
+    width: 130px;
+    background-color: #4256c5;
+  }
+.button-call{
+    position: absolute;
+    top: 60px; 
+    right: 0; /* set the right to 0 */
+    height: 60px;
+    width: 130px;
+    background-color: #4256c5;
+  }
 
-.button-connect2 {
+  .inputs {
+    background: yellow;
+    position: absolute;
+    top: 105px;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    background: transparent;
+  }
 
-  background-color: #d40e50;
-}
-
-.button-call {
-  position: absolute;
-  top: 60px;
-  right: 0;
-  /* set the right to 0 */
-  height: 60px;
-  width: 130px;
-  background-color: #4256c5;
-}
-
-.inputs {
-  position: absolute;
-  top: 0;
-  left: 0;
-  /* set the right to 0 */
-  /* width: 50vw; */
-  /* background-color: #7db99d; */
-}
-
-.dbg-info {
-  position: absolute;
-  top: 50vmin;
-  left: 0;
-  /* set the right to 0 */
-  /* width: 50vw; */
-  /* background-color: #7db99d; */
-  color: rgb(0, 255, 0);
-}
+  .dbg-info {
+    position: absolute;
+    bottom: 0; 
+    color: rgba(124, 245, 130, 0.349);
+  }

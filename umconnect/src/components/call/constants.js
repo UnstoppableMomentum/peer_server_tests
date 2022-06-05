@@ -1,3 +1,4 @@
-export const CALL_STATE_CONNECTED = "connected";
-export const CALL_STATE_CONNECTING = "connecting";
-export const CALL_STATE_DISCONNECTED = "disconnected";
+export const CALL_STATE_DISCONNECTED = 0;
+export const CALL_STATE_CONNECTING = 1;
+export const CALL_STATE_CONFIRMING = 2;
+export const CALL_STATE_CONNECTED = 3;

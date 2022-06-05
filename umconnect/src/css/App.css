@@ -32,23 +32,19 @@
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
 }
 
+
 .inner-container {
   min-height: 100vh;
-  background-color: #f39200;
 }
-
 .bottom {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  /* set the right to 0 */
+  bottom: 0; 
+  right: 0; /* set the right to 0 */
   height: 50vmin;
   width: 50vw;
-  background-color: #4256c5;
 }
