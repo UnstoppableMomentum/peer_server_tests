@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import ButtonHangup from '../controls/ButtonHangup';
 import { DialogCallConfirm } from '../dialogs/DialogCallConfirm'
 import ViewLocal from './ViewLocal'
 import ViewRemote from './ViewRemote'
-import { call, incomingCall, reject, hungup } from '../call'
+import { call, incomingCall, reject, hangup } from '../call'
 import {
   CALL_STATE_DISCONNECTED,
   CALL_STATE_CONNECTING,
@@ -43,7 +44,7 @@ const mapDispatchToProps = dispatch => ({
   dispatchCall: (remoteName) => call(dispatch, remoteName),
   dispatchIncomingCall: (callData) => incomingCall(dispatch, callData),
   dispatchReject: (remoteName) => reject(dispatch, remoteName),
-  dispatchHungup: (hungup) => hungup(dispatch)
+  dispatchHangup: () => hangup(dispatch)
 });
 
 
@@ -60,7 +61,7 @@ class ViewMain extends Component {
     this._onCall = this._onCall.bind(this);
     this._onConfirm = this._onConfirm.bind(this);
     this._onReject = this._onReject.bind(this);
-    this._onHungup = this._onHungup.bind(this);
+    this._onHangup = this._onHangup.bind(this);
     this._debugInfo = this._debugInfo.bind(this);
     this._onChangeLocalName = this._onChangeLocalName.bind(this);
     this._onChangeRemoteName = this._onChangeRemoteName.bind(this);
@@ -102,9 +103,9 @@ class ViewMain extends Component {
     dispatchReject(this.state.remoteName);
   }
 
-  _onHungup() {
-    const { dispatchHungup } = this.props;
-    dispatchHungup();
+  _onHangup() {
+    const { dispatchHangup } = this.props;
+    dispatchHangup();
   }
 
   _debugPeerServer() {
@@ -259,7 +260,9 @@ class ViewMain extends Component {
             <p />
             {this._renderInputButton()}
           </form>
+         
         </div>
+        <ButtonHangup onClick={this._onHangup}/>
         <div className="dbg-info">
           {this._debugInfo()}
         </div>

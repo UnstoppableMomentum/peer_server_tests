@@ -51,6 +51,7 @@ export function incomingReject(dispatch, remoteName) {
 }
 
 export function hangup(dispatch) {
+    webrtcCallStop();
     return dispatch(_callStop());
 }
 

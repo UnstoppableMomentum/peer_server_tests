@@ -1,21 +1,15 @@
 .button-base {
     background-color: rgb(10, 84, 221);
     border-radius: 50%;
-     width: 100px;
+    width: 100px;
     height: 100px;
 }
 
 .button-base-icon {
     width: 50%;
     height: 50%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    /* fill: red;
-    stroke: rgb(247, 243, 10); */
+    position: relative;
+    top: 20px;
 }
 
 .button-disabled {
@@ -23,5 +17,17 @@
 }
 
 .button-nodisplay {
-    display: none;  
+    display: none;
+}
+
+.button-hangup {
+    stroke: #a73f3f;
+    fill: white;
+    background-color: red;
+    position: absolute;
+    bottom: 1vh;
+    display: inline-block;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+
 }
