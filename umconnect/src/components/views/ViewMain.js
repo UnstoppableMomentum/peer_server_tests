@@ -3,6 +3,7 @@ import ButtonHangup from '../controls/ButtonHangup';
 import { DialogCallConfirm } from '../dialogs/DialogCallConfirm'
 import ViewLocal from './ViewLocal'
 import ViewRemote from './ViewRemote'
+import WebRtcStateInfo from '../controls/WebRtcStateInfo'
 import { call, incomingCall, reject, hangup } from '../call'
 import {
   CALL_STATE_DISCONNECTED,
@@ -244,8 +245,6 @@ class ViewMain extends Component {
     );
   }
   
-
-  // https://www.npmjs.com/package/react-confirm-alert
   render() {
 
     return (
@@ -263,6 +262,7 @@ class ViewMain extends Component {
          
         </div>
         <ButtonHangup onClick={this._onHangup}/>
+        <WebRtcStateInfo />
         <div className="dbg-info">
           {this._debugInfo()}
         </div>

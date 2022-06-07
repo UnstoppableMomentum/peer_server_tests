@@ -7,12 +7,15 @@ import {
     CALL_REJECT,
     CALL_STOP,
     CALL_START,
-    CALL_ERROR,
-    CALL_CONNECTION_EVENT
+    CALL_ERROR
 } from "./actionTypes";
 
 import { callStart as webrtcCallStart, callStop as webrtcCallStop, handleOffer as webrtcHandleOffer } from '../webrtc'
 import { sendMessageReject } from '../peer-server'
+
+export function callStop(dispatch) {
+    dispatch(_callStop());
+}
 
 export function askConfirmCall(dispatch, from, offer) {
     dispatch(_confirmCall(from, offer));
@@ -55,10 +58,6 @@ export function hangup(dispatch) {
     return dispatch(_callStop());
 }
 
-export function callConnectionEvent(dispatch, data) {
-    return dispatch(_callConnectionEvent(data));
-}
-
 export function error(dispatch, error) {
     return dispatch(_error(error));
 }
@@ -95,13 +94,6 @@ function _callStop() {
 export function _callConnected() {
     return {
         type: CALL_CONNECTED,
-    };
-}
-
-function _callConnectionEvent(data) {
-    return {
-        type: CALL_CONNECTION_EVENT,
-        payload: data
     };
 }
 

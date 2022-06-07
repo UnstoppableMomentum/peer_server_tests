@@ -1,5 +1,6 @@
 import * as types from "./types";
 
+//TODO: Remove
 export const initialState = {
   user: {},
   loggedIn: false

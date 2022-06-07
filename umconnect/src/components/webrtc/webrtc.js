@@ -1,3 +1,10 @@
+import {
+    connectionStateChange,
+    iceConnectionStateChange,
+    iceGatheringStateChange,
+    signalingStateChange
+} from './actions'
+
 import { 
     bitrateConstraints,
     mediaConstraints,
@@ -14,12 +21,9 @@ import {
     callConnected
 } from '../call/actions'
 
-
 import { addVideoBandwidth } from './utils' 
 
 let pc = null;
-let idRemote = null;
-
 let videoLocal = null;
 let remoteVideo = null;
 let localStream = null;
@@ -61,6 +65,18 @@ function createPeerConnection(dispatch, idRemote) {
     glIdRemote = idRemote;
     console.log('glIdRemote: %o', glIdRemote);
     pc.onicecandidate = onIceCandidate;
+    pc.oniceconnectionstatechange = () => {
+        iceConnectionStateChange(dispatch, pc.iceConnectionState)
+    }
+    pc.onicegatheringstatechange = () => {
+        iceGatheringStateChange(dispatch, pc.iceGatheringState)
+    }
+    pc.onsignalingstatechange= () => {
+        signalingStateChange(dispatch, pc.signalingState)
+    }
+    pc.onconnectionstatechange = () => {
+        connectionStateChange(dispatch, pc.connectionState)
+    }
     pc.ontrack = e => {
         console.log('Remote :%o', remoteVideo);
         callConnected(dispatch);

@@ -2,7 +2,6 @@ import {
     CALL_CONNECTED,
     CALL_CONFIRM,
     CALL_REJECT,
-    CALL_CONNECTION_EVENT,
     CALL_ERROR,
     CALL_START,
     CALL_STOP
@@ -53,11 +52,6 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 error: action.payload
-            };
-        case CALL_CONNECTION_EVENT:
-            return {
-                ...state,
-                data: action.payload
             };
         default:
             return state;

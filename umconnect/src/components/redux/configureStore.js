@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux'
-
 import { createStore, applyMiddleware } from "redux";
 
 import { rootReducer, initialState } from "./reducers";

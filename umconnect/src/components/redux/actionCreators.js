@@ -10,6 +10,7 @@ export const fetchNewTime = (timezone = "pst", str = "now") => ({
   }
 });
 
+//TODO: Clean up
 export const login = user => ({
   type: types.LOGIN,
   payload: user
