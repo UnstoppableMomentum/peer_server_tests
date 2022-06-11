@@ -185,12 +185,13 @@ class ViewMain extends Component {
   }
 
   _renderControlsConnectPeer() {
-    const { progressPeer = 0 } = this.props;
+    const { progressCall = CALL_STATE_DISCONNECTED, progressPeer = 0 } = this.props;
+    const show = progressCall === CALL_STATE_CONNECTED ? false : true;
 
     return (
       <>
         {
-          <input type="text" className='text-input' disabled={progressPeer === 3} onChange={this._onChangeLocalName} placeholder="Введите свое имя" />
+          show ? <input type="text" className='text-input' disabled={progressPeer === 3} onChange={this._onChangeLocalName} placeholder="Введите свое имя" /> : null
         }
       </>
     );
@@ -200,11 +201,12 @@ class ViewMain extends Component {
     const { progressCall = CALL_STATE_DISCONNECTED, progressPeer = 0 } = this.props;
     const disabled_ = progressPeer !== 3 && progressCall === CALL_STATE_DISCONNECTED;
     const placeholderText_ = disabled_ ? null : "Введите имя собеседника";
+    const show = progressCall === CALL_STATE_CONNECTED ? false : true;
 
     return (
       <>
         {
-          <input type="text" className='text-input' disabled={disabled_} onChange={this._onChangeRemoteName} placeholder={placeholderText_} />
+          show ? <input type="text" className='text-input' disabled={disabled_} onChange={this._onChangeRemoteName} placeholder={placeholderText_} /> : null
         }
       </>
     );

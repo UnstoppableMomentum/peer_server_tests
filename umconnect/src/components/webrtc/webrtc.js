@@ -23,6 +23,7 @@ import {
 
 import { addVideoBandwidth } from './utils' 
 
+// TODO: implement using redux
 let pc = null;
 let videoLocal = null;
 let remoteVideo = null;
