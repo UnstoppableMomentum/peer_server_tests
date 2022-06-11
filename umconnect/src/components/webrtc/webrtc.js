@@ -28,6 +28,9 @@ let videoLocal = null;
 let remoteVideo = null;
 let localStream = null;
 let glIdRemote = null;
+var iceCandidates = [];
+var readyToProcessCandidates = false;
+
 
 export async function initMedia() {
     videoLocal = document.getElementById('videoLocal');
@@ -47,6 +50,7 @@ export async function initMedia() {
 
 export async function callStart(dispatch, idRemote) {
 
+    iceCandidates = [];
     await createPeerConnection(dispatch, idRemote);
 
     let offer = await pc.createOffer();
@@ -93,7 +97,8 @@ export async function handleOffer(dispatch, idRemote, offer) {
     }
 
     await createPeerConnection(dispatch, idRemote);
-    await pc.setRemoteDescription(offer);
+    await pc.setRemoteDescription(offer)
+    onSetRemoteDescription();
 
     glIdRemote = idRemote;
     console.log('handleOffer glIdRemote: %o', glIdRemote);
@@ -110,24 +115,27 @@ export async function handleAnswer(dispatch, answer) {
         return;
     }
     await pc.setRemoteDescription(answer);
+    onSetRemoteDescription();
     callConnected(dispatch);
 }
-
+function iceCandidateProc (candidate, processed) {
+    this.candidate = candidate;
+    this.processed = processed;
+}
 export async function handleCandidate(dispatch, message) {
-    if (!pc) {
-        console.error('no peerconnection');
-        return;
-    }
 
     const candidate = new RTCIceCandidate({
         sdpMLineIndex: message.sdpMLineIndex,
         candidate: message.candidate
     });
 
-    if (!candidate.candidate) {
-        await pc.addIceCandidate(null);
-    } else {
-        await pc.addIceCandidate(candidate);
+    if (candidate.candidate) {
+       // await pc.addIceCandidate(null);
+    //} else {
+        //await pc.addIceCandidate(candidate.candidate);
+        iceCandidates.push(new iceCandidateProc(candidate, false));
+        console.log("msg.type === candidate iceCandidates:length:" + iceCandidates.length);
+        processIceCadidates();
     }
 }
 
@@ -144,5 +152,24 @@ function destroylPeerConnection() {
     if (pc) {
         pc.close();
         pc = null;
+    }
+}
+
+function onSetRemoteDescription()
+{
+    readyToProcessCandidates = true;
+    processIceCadidates();
+}
+
+async function processIceCadidates() {
+    if(readyToProcessCandidates && pc && iceCandidates) {
+        for (var i in iceCandidates) {
+            var candidateProc = (iceCandidates[i]);
+            if(!candidateProc.processed) {
+                candidateProc.processed = true;
+                var candidate = candidateProc.candidate;
+                await pc.addIceCandidate(candidate);
+            }
+        }
     }
 }
