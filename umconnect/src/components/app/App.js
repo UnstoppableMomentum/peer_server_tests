@@ -3,7 +3,7 @@ import '../../css/App.css';
 import ViewMain from '../views/ViewMain'
 import MenuWrap from '../menu/MenuWrap';
 import BurgerMenu from 'react-burger-menu';
-
+import classNames from 'classnames';
 import '../menu/fonts/font-awesome-4.2.0/css/font-awesome.min.css';
 import '../menu/normalize.css';
 
@@ -94,12 +94,66 @@ function getMenu() {
 }
 
 function App() {
+
   return (
-    <div className="App">
+    <div id="outer-container" style={{ height: '100%' }}>
       {getMenu()}
-      <ViewMain/>
+      <main id="page-wrap">
+        <h1>
+          <a href="https://github.com/negomi/react-burger-menu">
+            react-burger-menu
+          </a>
+        </h1>
+        <a
+          className={classNames({
+            'side-button': true,
+            left: true,
+            active: state.side === 'left'
+          })}
+        
+        >
+          Left
+        </a>
+        <a
+          className={classNames({
+            'side-button': true,
+            right: true,
+            active: state.side === 'right'
+          })}
+        
+        >
+          Right
+        </a>
+        <h2 className="description">
+          An off-canvas sidebar React component with a collection of effects
+          and styles using CSS transitions and SVG path animations.
+        </h2>
+        
+        Inspired by{' '}
+        <a href="https://github.com/codrops/OffCanvasMenuEffects">
+          Off-Canvas Menu Effects
+        </a>{' '}
+        and{' '}
+        <a href="https://github.com/codrops/SidebarTransitions">
+          Sidebar Transitions
+        </a>{' '}
+        by Codrops
+      </main>
     </div>
   );
+
+
+  //   return (
+//       <div id="outer-container" style={{ height: '100%' }}>
+//  <main id="page-wrap">
+// {/* <div className="App"> */}
+//       {getMenu()}
+//       {/* <ViewMain/> */}
+//       {/* </div> */}
+//       </main>
+//     </div>
+
+//   );
 }
 
 export default App;
