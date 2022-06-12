@@ -1,11 +1,16 @@
 import logo from '../../logo.svg';
 import '../../css/App.css';
+import '../../css/Menu.css';
 import ViewMain from '../views/ViewMain'
-import MenuWrap from '../menu/MenuWrap';
-import BurgerMenu from 'react-burger-menu';
-import classNames from 'classnames';
-import '../menu/fonts/font-awesome-4.2.0/css/font-awesome.min.css';
-import '../menu/normalize.css';
+// import MenuWrap from '../menu/MenuWrap';
+// import MenuMain from '../menu/MenuMain';
+
+// import BurgerMenu from 'react-burger-menu';
+// import classNames from 'classnames';
+// import '../menu/fonts/font-awesome-4.2.0/css/font-awesome.min.css';
+// import '../menu/normalize.css';
+import SideBar from "../menu/sidebar";
+
 
 const state = {
   currentMenu: 'slide',
@@ -78,82 +83,33 @@ export function getItems() {
 }
 
 function getMenu() {
-  const Menu = BurgerMenu[state.currentMenu];
-  return (
-    <MenuWrap wait={20} side={state.side}>
-      <Menu
-        id={state.currentMenu}
-        pageWrapId={'page-wrap'}
-        outerContainerId={'outer-container'}
-        right={state.side === 'right'}
-      >
-        {getItems()}
-      </Menu>
-    </MenuWrap>
-  );
+  // const Menu = BurgerMenu[state.currentMenu];
+  // return (
+  //   <MenuWrap wait={20} side={state.side}>
+  //     <Menu
+  //       id={state.currentMenu}
+  //       pageWrapId={'page-wrap'}
+  //       outerContainerId={'outer-container'}
+  //       right={state.side === 'right'}
+  //     >
+  //       {getItems()}
+  //     </Menu>
+  //   </MenuWrap>
+  // );
 }
 
 function App() {
-
   return (
-    <div id="outer-container" style={{ height: '100%' }}>
-      {getMenu()}
-      <main id="page-wrap">
-        <h1>
-          <a href="https://github.com/negomi/react-burger-menu">
-            react-burger-menu
-          </a>
-        </h1>
-        <a
-          className={classNames({
-            'side-button': true,
-            left: true,
-            active: state.side === 'left'
-          })}
-        
-        >
-          Left
-        </a>
-        <a
-          className={classNames({
-            'side-button': true,
-            right: true,
-            active: state.side === 'right'
-          })}
-        
-        >
-          Right
-        </a>
-        <h2 className="description">
-          An off-canvas sidebar React component with a collection of effects
-          and styles using CSS transitions and SVG path animations.
-        </h2>
-        
-        Inspired by{' '}
-        <a href="https://github.com/codrops/OffCanvasMenuEffects">
-          Off-Canvas Menu Effects
-        </a>{' '}
-        and{' '}
-        <a href="https://github.com/codrops/SidebarTransitions">
-          Sidebar Transitions
-        </a>{' '}
-        by Codrops
-      </main>
+    <div id="App" className="App">
+      {<SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} /> }
+
+      <div id="page-wrap">
+        <ViewMain/>
+      </div>
     </div>
   );
-
-
-  //   return (
-//       <div id="outer-container" style={{ height: '100%' }}>
-//  <main id="page-wrap">
-// {/* <div className="App"> */}
-//       {getMenu()}
-//       {/* <ViewMain/> */}
-//       {/* </div> */}
-//       </main>
-//     </div>
-
-//   );
 }
+
+
 
 export default App;
