@@ -17,6 +17,9 @@ import { connectPeerServer } from '../peer-server/actions';
 import { fetchNewTime } from "../redux/actionCreators";
 import { getUrlPeerServer } from '../config'
 import { VERSION } from '../version';
+
+import { User, saveUser, loadUser } from '../profile/user/user';
+
 import '../../css/ViewMain.css';
 import '../../css/TextInput.css';
 import '../../css/Buttons.css';
@@ -54,7 +57,7 @@ class ViewMain extends Component {
   constructor(props: Props) {
     super(props);
     this.state = {
-      localName: '',
+      user: loadUser(),
       remoteName: '',
       urlServer: getUrlPeerServer()
     };
@@ -86,7 +89,7 @@ class ViewMain extends Component {
 
   _onConnectPeerServer() {
     const { dispatchConnectPeerServer } = this.props;
-    dispatchConnectPeerServer(this.state.urlServer, this.state.localName);
+    dispatchConnectPeerServer(this.state.urlServer, this.state.user.name());
   }
 
   _onCall() {
@@ -149,7 +152,11 @@ class ViewMain extends Component {
   }
 
   _onChangeLocalName(event) {
-    this.setState({ localName: event.target.value });
+    let { user } = this.state;
+    user.props.name = event.target.value;
+
+    saveUser(user);
+    this.setState({ user });
   }
 
   _onChangeRemoteName(event) {
@@ -164,10 +171,10 @@ class ViewMain extends Component {
       progressCall,
       progressPeer
     } = this.props;
-
+    
     switch (progressPeer) {
       case 0:
-        dispatchConnectPeerServer(this.state.urlServer, this.state.localName);
+        dispatchConnectPeerServer(this.state.urlServer, this.state.user.name());
         break;
       case 1:
       case 2:
@@ -187,11 +194,19 @@ class ViewMain extends Component {
   _renderControlsConnectPeer() {
     const { progressCall = CALL_STATE_DISCONNECTED, progressPeer = 0 } = this.props;
     const show = progressCall === CALL_STATE_CONNECTED ? false : true;
-
+    const { user } = this.state;
+    const localName = user ? this.state.user.name() : '';
     return (
       <>
         {
-          show ? <input type="text" className='text-input' disabled={progressPeer === 3} onChange={this._onChangeLocalName} placeholder="Введите свое имя" /> : null
+          show 
+            ? < input type="text" 
+                className='text-input'
+                disabled={progressPeer === 3} 
+                onChange={this._onChangeLocalName} 
+                placeholder="Введите свое имя" 
+                value={localName}/> 
+            : null
         }
       </>
     );
@@ -214,12 +229,13 @@ class ViewMain extends Component {
 
   _renderInputButton() {
     const { progressCall = CALL_STATE_DISCONNECTED, progressPeer = 0 } = this.props;
+    const { user } = this.state;
     let className_ = "button-base";
     let disabled_ = true;
 
     switch (progressPeer) {
       case 0:
-        disabled_ = !this.state.localName;
+        disabled_ = user && !this.state.user.name();
         break;
       case 1:
       case 2:
