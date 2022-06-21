@@ -25,7 +25,7 @@ export function saveUser(user: User) {
   }
 }
 
-export function loadUser(user: User) {
+export function loadUser() {
     let v = null;
     try {
         const s = localStorage.getItem('user');

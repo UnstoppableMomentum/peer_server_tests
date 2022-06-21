@@ -15,10 +15,11 @@ import {
 import { connect } from "react-redux";
 import { connectPeerServer } from '../peer-server/actions';
 import { fetchNewTime } from "../redux/actionCreators";
-import { getUrlPeerServer } from '../config'
 import { VERSION } from '../version';
 
-import { User, saveUser, loadUser } from '../profile/user/user';
+import { saveUser, loadUser } from '../profile/user';
+import { getUrlPeerServer } from '../profile/connectivity';
+
 
 import '../../css/ViewMain.css';
 import '../../css/TextInput.css';
