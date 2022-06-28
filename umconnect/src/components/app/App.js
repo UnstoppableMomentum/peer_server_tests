@@ -1,3 +1,4 @@
+import DialogContainer from '../dialogs/DialogContainer'
 import ViewMain from '../views/ViewMain'
 import SideBar from "../menu/sidebar";
 
@@ -9,7 +10,8 @@ function App() {
     <div id="App" className="App">
       {<SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} />}
       <div id="page-wrap">
-        <ViewMain/>
+        <DialogContainer />
+        {/* <ViewMain/> */}
       </div>
     </div>
   );

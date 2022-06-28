@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import '../../css/Buttons.css';
 
 type Props = {
+  caption: String,
   disabled: boolean,
   icon: Object,
   onClick: Object,
@@ -20,14 +21,15 @@ export class ButtonBase extends Component {
   }
 
   render() {
-    const { disabled, cssStyle, icon: IconComponent, onClick } = this.props;
+    const { caption, disabled, cssStyle, icon: IconComponent, onClick } = this.props;
     let cssStyle_ = cssStyle ? cssStyle : 'button-base';
     if (disabled) {
       cssStyle_ += ' button-disabled';
     }
     return (
       <div className={ cssStyle_ } onClick={disabled ? null: onClick}>
-        <IconComponent className='button-base-icon'/>
+        { IconComponent ? <IconComponent className='button-base-icon'/> : null }
+        { caption }
       </div>
     );
   }

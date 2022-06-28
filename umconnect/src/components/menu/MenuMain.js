@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import DialogConnectivity from '../config/DialogConnectivity';
+import {openDialog} from '../dialogs/actions'
+
 import {
   CALL_STATE_DISCONNECTED,
   CALL_STATE_CONNECTED
@@ -32,6 +35,7 @@ export default class MenuMain extends Component {
 
   showConnectivity(event) {
     event.preventDefault();
+    openDialog(DialogConnectivity);
   }
 
 

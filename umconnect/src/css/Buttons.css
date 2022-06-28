@@ -1,6 +1,6 @@
 .button-base {
     background-color: rgb(10, 84, 221);
-    border-radius: 50%;
+    /* border-radius: 50%; */
     width: 100px;
     height: 100px;
 }
