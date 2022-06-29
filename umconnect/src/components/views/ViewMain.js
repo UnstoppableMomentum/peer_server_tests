@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ButtonHangup from '../controls/ButtonHangup';
 import { DialogCallConfirm } from '../dialogs/DialogCallConfirm'
+
 import ViewLocal from './ViewLocal'
 import ViewRemote from './ViewRemote'
 import WebRtcStateInfo from '../controls/WebRtcStateInfo'
@@ -222,7 +223,14 @@ class ViewMain extends Component {
     return (
       <>
         {
-          show ? <input type="text" className='text-input' disabled={disabled_} onChange={this._onChangeRemoteName} placeholder={placeholderText_} /> : null
+          show 
+            ? <input
+              type="text"
+              className='text-input'
+              disabled={disabled_}
+              onChange={this._onChangeRemoteName}
+              placeholder={placeholderText_} />
+              : null
         }
       </>
     );

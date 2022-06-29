@@ -26,7 +26,7 @@ export default class DialogBase extends Component {
     const {content, onSubmit} = this.props;
     console.log('dialog base %o %o ', content, onSubmit);
     return (
-      <div id="DialogBase" className="dialog-base">
+      <div id="DialogBase" className="dialog-base dialog-container">
         <div className="dialog-content-container">
           {content}
         </div>

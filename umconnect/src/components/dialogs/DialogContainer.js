@@ -70,9 +70,12 @@ class DialogContainer extends Component<Props> {
         } = this.props;
 
         return (
-            component
+            <React.Fragment>
+            {component
                 ? React.createElement(component, componentProps)
-                : null);
+                : null}
+            </React.Fragment>
+        )
     }
 
     render() {
