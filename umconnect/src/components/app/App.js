@@ -9,10 +9,13 @@ import '../../css/Menu.css';
 function App() {
   return (
     <div id="App" className="App">
-      <DialogContainer className="dialog-container"/>
-      {<SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} />}
+      <SideBar pageWrapId={"App"} outerContainerId={"App"}/>
+
+      {/* <DialogContainer className="dialog-container"/> */}
+
       <div id="page-wrap">
-        <ViewMain/> 
+      <DialogContainer className="dialog-container"/>
+      <ViewMain/>
       </div>
     </div>
   );

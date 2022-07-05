@@ -29,7 +29,9 @@ export class ButtonBase extends Component {
     return (
       <div className={ cssStyle_ } onClick={disabled ? null: onClick}>
         { IconComponent ? <IconComponent className='button-base-icon'/> : null }
-        { caption }
+        <div className="button-dialog-text-container">
+          { caption }
+        </div>
       </div>
     );
   }

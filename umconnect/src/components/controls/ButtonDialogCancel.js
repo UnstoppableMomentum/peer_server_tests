@@ -34,7 +34,7 @@ class ButtonDialogCancel extends ButtonBase {
             <> 
                 {<ButtonBase 
                     cssStyle={'button-base button-dialog'}
-                    caption={'Cancel'}
+                    caption={'Выход'}
                     onClick={this._hideDialog}
                     disabled={false}
                 />}

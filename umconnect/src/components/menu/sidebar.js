@@ -3,51 +3,9 @@ import { connect } from "react-redux";
 
 import { slide as Menu } from "react-burger-menu";
 import DialogConnectivity from '../config/DialogConnectivity';
-import {openDialog} from '../dialogs/actions'
+import { openDialog } from '../dialogs/actions'
 
-function showDlgUserProfile() {
-  console.log('@@@ showDlgUserProfile');
-}
-
-function showDlgConnectivity() {
-  console.log('@@@ showDlgConnectivity');
- // openDialog2(DialogConnectivity);
-}
-
-/*export default props => {
-  return (
-    // Pass on our props
-    <Menu {...props}>
-      <a className="menu-item" onClick={showDlgUserProfile}>
-        Пользователь
-      </a>
-      <a className="menu-item" onClick={showDlgConnectivity}>
-        Подключение
-      </a>
-    </Menu>
-  );
-};
-*/
-
-const mapStateToProps = state => {
-  return {
-  };
-};
-
-
-// const mapDispatchToProps = dispatch => ({
-//   dispatchOpenDialog: (component, componentProps) => openDialog(component, componentProps),
-// });
-
-const wmapDispatchToProps = (dispatch) => {
-  return {
-    // dispatching plain actions
-    increment: () => dispatch({ type: 'INCREMENT' }),
-    decrement: () => dispatch({ type: 'DECREMENT' }),
-    reset: () => dispatch({ type: 'RESET' }),
-  }
-}
-
+import  DialogAbout  from '../about/DialotAbout'
 
 type Props = {
   classes: Object,
@@ -60,34 +18,37 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-
 class SideBar extends Component {
   constructor(props: Props) {
     super(props);
 
     this.openDialogConnectivity = this.openDialogConnectivity.bind(this);
+    this.openDialogAbout = this.openDialogAbout.bind(this);
   }
 
   openDialogConnectivity() {
     const { dispatchOpenDialog } = this.props;
     dispatchOpenDialog(DialogConnectivity);
   }
-  
+
+  openDialogAbout() {
+    const { dispatchOpenDialog } = this.props;
+    dispatchOpenDialog(DialogAbout);
+  }
+
   render() {
-
-
     return (
-        // Pass on our props
-        <Menu {...this.props}>
-          <a className="menu-item" onClick={showDlgUserProfile}>
-            Пользователь
-          </a>
-          <a className="menu-item" onClick={this.openDialogConnectivity}>
-            Подключение
-          </a>
-        </Menu>
-      );
+      // Pass on our props
+      <Menu {...this.props}>
+        <a className="menu-item" onClick={this.openDialogConnectivity}>
+          Подключение
+        </a>
+        <a className="menu-item" onClick={this.openDialogAbout}>
+          Selenika
+        </a>
+      </Menu>
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SideBar);
+export default connect(null, mapDispatchToProps)(SideBar);
