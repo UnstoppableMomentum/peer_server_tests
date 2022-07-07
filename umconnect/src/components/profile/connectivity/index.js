@@ -26,12 +26,19 @@ export function saveConnectivity(connectivity: Connectivity) {
   }
 }
 
+function validate (connectivity = {}) {
+  if (!connectivity?.server || connectivity.server.length === 0) {
+    connectivity.server = DEFAULT_URL_PEER_SERVER;
+  }
+  return connectivity;
+}
+
 export function loadConnectivity() {
     let v = null;
     try {
         const s = localStorage.getItem('connectivity');
         if (s && s !== 'undefined') {
-            v = new Connectivity(JSON.parse(s));
+            v = new Connectivity(validate(JSON.parse(s)));
         }
     } catch (e) {
         console.warning("Getting %o from localStorage: %o", 'connectivity', e);
